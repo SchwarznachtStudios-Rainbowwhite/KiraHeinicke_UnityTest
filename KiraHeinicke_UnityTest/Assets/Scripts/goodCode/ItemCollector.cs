@@ -3,49 +3,47 @@ using System.Collections.Generic;
 
 public class ItemCollector : MonoBehaviour
 {
-    /*
-    Aufgabenstellung: Refaktorisierung
 
-    - Vereinfachen Sie die Methode 'CollectItems' mithilfe eines Arrays und einer foreach-Schleife.
-    - Refaktorisieren Sie den Code gemäß den Best Practices der Code-Formatierung.
-    - Ergänzen Sie Codeblöcke mit Kommentaren zur Beschreibung ihrer Funktion.
-    - Nach jeder Refaktorisierung erfolgt ein Push auf Git mit deskriptiven Namen.
-    - Nach Abschluss aller Refaktorisierungen laden Sie oli90martin@web.de als Collaborator zu Ihrer Git-Repository ein.
-    */
+// VARIABLES VARIABLES
 
-                        public GameObject item1;
-                        public GameObject item2;
-                        public GameObject item3;
-                        public GameObject item4;
-                        public GameObject item5;
-           private List<GameObject> collectedItems = new List<GameObject>();
+    public GameObject[] Items = new GameObject[5];
 
-            void Update()
-            {
-                CollectItems();
-            }
+    private int _itemCounter = 0;
+
+
+// START START START
+
+    public void Start()
+    {
+        _itemCounter = 0;
+    }
+
+// UPDATE UPDATE UPDATE
+
+    void Update()
+    {
+        CollectItems();
+    }
+
+// FUNCTIONS FUNCTIONS 
 
     void CollectItems()
     {
-        if (item1 != null)
+        // Durchzählen des Item Arrays
+        foreach(GameObject item in Items)
         {
-            collectedItems.Add(item1);
+            // Item wird im Item Array an der Stelle des itemCounters eingespeichert
+            Items[_itemCounter] = item;
+
+            // Hochzählen des itemCounters um Überschreibungen zu vermeiden
+            _itemCounter++;
+
+            // Wenn Maximale Menge an Items (Item Array Länge = Inventar Größe? ) erreicht ist, Fehlermeldung
+            if (_itemCounter == Items.Length)
+            {
+                Debug.Log("Inventar voll");
+            }
         }
-        if (item2 != null)
-        {
-            collectedItems.Add(item2);
-        }
-        if (item3 != null)
-        {
-            collectedItems.Add(item3);
-        }
-        if (item4 != null)
-        {
-            collectedItems.Add(item4);
-        }
-        if (item5 != null)
-        {
-            collectedItems.Add(item5);
-        }
+
     }
 }
