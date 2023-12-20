@@ -1,32 +1,122 @@
 using UnityEngine;
-using System;
 using System.Collections.Generic;
-using UnityEngine.UI;
 
 public class WinterSportsGame : MonoBehaviour
 {
-    /*
-    Aufgabenstellung: Refaktorisierung
 
-    - Refaktorisieren Sie das Skript gemäß den Best Practices der Code-Formatierung.
-    - Ergänzen Sie Codeblöcke mit Kommentaren zur Beschreibung ihrer Funktion.
-    - Achten Sie auf die konsistente Benennung von Variablen und Methoden.
-    - Nach jeder Refaktorisierung erfolgt ein Push auf Git mit deskriptiven Namen.
-    - Zum Abschluss soll vor Abgabe ein Finaler Push zur mit dem Namen Abgabe erfolgen.
-    - Nach Abschluss ALLER Refaktorisierungen laden Sie oli90martin@web.de als Collaborator zu Ihrer Git-Repository ein.
-    */
+    // VARIABLES VARIABLES
 
-    public int playerStamina = 100; public GameObject ski; public List<string> Achievements = new List<string>(); private bool isSkiing; public float speed = 10f;
-    void Start() { playerStamina = 100; Debug.Log("WinterSports beginnt!"); }
-    void Update() { if (playerStamina > 0) { CheckSkiing(); CheckAchievements(); } else { Debug.Log("Spiel beendet!"); } }
+    public GameObject Ski;
+
+    public int PlayerStamina = 100;
+    public float PlayerSpeed = 10f;
+
+    public List<string> Achievements = new List<string>();
+
+    private bool _isSkiing;
+
+
+// START START START
+    void Start()
+    { 
+        // Zurücksetzen Stamina
+        PlayerStamina = 100; 
+
+
+        Debug.Log("WinterSports beginnt!");
+    }
+
+// UPDATE UPDATE UPDATE
+    void Update() 
+    {
+        // Überprüfen ob Spiel zuende
+        CheckForGameEnd();
+
+    }
+
+
+// FUNCTIONS FUNCTIONS
+
     void CheckSkiing()
-    { if (isSkiing) { var move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")); ski.transform.Translate(move * speed * Time.deltaTime); } else { Debug.Log("Spieler kann nicht Ski fahren!"); } }
+    { 
+        // Wenn Skiing, dann Bewegung
+        // Sonst Fehlermeldung
+        if (_isSkiing) 
+        { 
+            var move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            Ski.transform.Translate(move * PlayerSpeed * Time.deltaTime); 
+        }
+        else
+        { 
+            Debug.Log("Spieler kann nicht Ski fahren!");
+        } 
+    }
+
+
     void CheckAchievements()
     {
-        if (Achievements.Count == 0) { Debug.Log("Keine Erfolge erzielt."); } else { foreach (var achievement in Achievements) { Debug.Log("Erfolg: " + achievement); } }
+        // Prüfung ob Achievements erreicht worden.
+        // Meldung wenn keine, ansonsten Auflistung der Achievements
+        if (Achievements.Count == 0) 
+        { 
+            Debug.Log("Keine Erfolge erzielt."); 
+        } 
+        else
+        { 
+            foreach (var achievement in Achievements) 
+            { 
+                Debug.Log("Erfolg: " + achievement);
+            }
+        }
     }
-    public void LoseStamina(int amount) { playerStamina -= amount; if (playerStamina < 0) { playerStamina = 0; } }
-    public void AddAchievement(string achievement) { if (!Achievements.Contains(achievement)) { Achievements.Add(achievement); } }
-    public void StartSkiing() { isSkiing = true; }
-    public void StopSkiing() { isSkiing = false; }
+
+
+    // Händelt den Ausdauerverlust des Spielers
+    public void LoseStamina(int amount)
+    {
+
+        PlayerStamina -= amount;
+
+        // Wenn Stamina unter 0 ist, auf 0 setzen
+        if (PlayerStamina < 0) 
+        {
+            PlayerStamina = 0;
+        }
+    }
+
+    public void AddAchievement(string achievement) 
+    { 
+        // Wenn Achievement nicht in Liste, dann hinzufügen
+        if (!Achievements.Contains(achievement))
+        { 
+            Achievements.Add(achievement); 
+        }
+    }
+
+    public void StartSkiing()
+    {
+        _isSkiing = true;
+    }
+
+    public void StopSkiing()
+    { 
+        _isSkiing = false;
+    }
+
+    public void CheckForGameEnd()
+    {
+        // Wenn Ausdauer über 0, Soiel läuft
+        // Ansonsten Spiel zuende
+        if (PlayerStamina > 0)
+        {
+            CheckSkiing();
+            CheckAchievements();
+        }
+        else
+        {
+            Debug.Log("Spiel beendet!");
+        }
+
+    }
+
 }
